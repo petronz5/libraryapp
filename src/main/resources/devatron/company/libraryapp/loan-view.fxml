@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="devatron.company.libraryapp.LoanController"
+      spacing="15" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <Label text="Gestione Prestiti" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Utente:"/>
+        <TextField fx:id="txtUserEmail" promptText="Email utente"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="ISBN Libro:"/>
+        <TextField fx:id="txtBookIsbn" promptText="ISBN del libro"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Data inizio:"/>
+        <DatePicker fx:id="dpLoanStart"/>
+    </HBox>
+    
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Data scadenza:"/>
+        <DatePicker fx:id="dpLoanDue"/>
+    </HBox>
+    
+    <HBox spacing="10">
+        <Button text="Registra Prestito" onAction="#handleRegisterLoan"/>
+        <Button text="Annulla" onAction="#handleCancel"/>
+    </HBox>
+</VBox>

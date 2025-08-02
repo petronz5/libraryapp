@@ -17,6 +17,8 @@ public class LoginController {
     private TextField txtPasswordVisible;
     @FXML
     private Button btnTogglePassword;
+    @FXML
+    private Button btnLogin;
 
     private final UserDAO userDAO;
 
@@ -35,6 +37,8 @@ public class LoginController {
                 txtPassword.setText(newVal);
             }
         });
+        btnLogin.setOnAction(e -> handleLogin());
+        btnLogin.setDefaultButton(true);
     }
     @FXML
     private void togglePasswordVisibility() {

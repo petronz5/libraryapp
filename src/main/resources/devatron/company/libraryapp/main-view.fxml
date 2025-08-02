@@ -5,14 +5,16 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="devatron.company.libraryapp.MainController"
-            prefHeight="600.0"
-            prefWidth="900.0"
+            prefHeight="800.0"
+            prefWidth="1200.0"
             stylesheets="@styles.css">
     <top>
         <HBox spacing="10" styleClass="top-bar">
             <Label text="Search:" styleClass="search-label"/>
             <TextField fx:id="txtSearch" promptText="Cerca (ISBN/Titolo/Editore/Autore)" styleClass="search-field"/>
             <Button text="Cerca" onAction="#handleSearch" styleClass="search-button"/>
+            <Button text="Statistiche" onAction="#handleShowStatistics" styleClass="stats-button"/>
+            <Button text="Prestiti" onAction="#handleShowLoans" styleClass="loan-button"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>
         </HBox>
@@ -27,6 +29,9 @@
                 <TableColumn fx:id="colAuthor" text="Autore" prefWidth="150"/>
                 <TableColumn fx:id="colYear" text="Anno" prefWidth="70"/>
                 <TableColumn fx:id="colPrice" text="Prezzo" prefWidth="70"/>
+                <TableColumn fx:id="colGenre" text="Genere" prefWidth="100"/>
+                <TableColumn fx:id="colQuantity" text="Quantità" prefWidth="80"/>
+                <TableColumn fx:id="colSold" text="Venduti" prefWidth="80"/>
             </columns>
         </TableView>
     </center>
@@ -55,6 +60,15 @@
                 <Spinner fx:id="spYear" editable="true"/>
                 <Label text="Prezzo:"/>
                 <TextField fx:id="txtPrice" promptText="Es. 9.99"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Genere:"/>
+                <TextField fx:id="txtGenre" promptText="Es. Giallo"/>
+                <Label text="Quantità:"/>
+                <TextField fx:id="txtQuantity" promptText="0"/>
+                <Label text="Venduti:"/>
+                <TextField fx:id="txtSold" promptText="0"/>
             </HBox>
 
             <HBox spacing="10" alignment="CENTER_RIGHT">

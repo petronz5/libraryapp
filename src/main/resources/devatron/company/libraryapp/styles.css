@@ -68,3 +68,11 @@
     -fx-pref-width: 220px;
     -fx-font-size: 14px;
 }
+
+.stats-table {
+    -fx-background-color: #ecf0f1;
+    -fx-font-size: 15px;
+}
+.stats-pie {
+    -fx-font-size: 16px;
+}

@@ -32,7 +32,7 @@
     </HBox>
 
     <HBox spacing="20" alignment="CENTER">
-        <Button text="Login" onAction="#handleLogin"/>
+        <Button fx:id="btnLogin" text="Login" onAction="#handleLogin"/>
         <Button text="Esci" onAction="#handleExit"/>
     </HBox>
 </VBox>

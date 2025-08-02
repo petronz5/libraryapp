@@ -14,6 +14,7 @@ public class LibraryApp extends Application {
         primaryStage = stage;
         switchToLoginView();
         primaryStage.setTitle("Library App - Login");
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
     public static void switchToLoginView() {
@@ -22,6 +23,7 @@ public class LibraryApp extends Application {
             Scene scene = new Scene(loader.load());
             primaryStage.setTitle("Library App - Login");
             primaryStage.setScene(scene);
+            primaryStage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,10 +34,16 @@ public class LibraryApp extends Application {
             Scene scene = new Scene(loader.load());
             primaryStage.setTitle("Library Manager");
             primaryStage.setScene(scene);
+            primaryStage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

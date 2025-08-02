@@ -1,10 +1,14 @@
 package devatron.company.libraryapp;
 
+import java.io.IOException;
+
 import devatron.company.libraryapp.dao.BookDAO;
 import devatron.company.libraryapp.model.Book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 
@@ -25,6 +29,12 @@ public class MainController {
     @FXML
     private TableColumn<Book, Double> colPrice;
     @FXML
+    private TableColumn<Book, String> colGenre;
+    @FXML
+    private TableColumn<Book, Integer> colQuantity;
+    @FXML
+    private TableColumn<Book, Integer> colSold;
+    @FXML
     private TextField txtIsbn;
     @FXML
     private TextField txtTitle;
@@ -38,6 +48,13 @@ public class MainController {
     private TextField txtPrice;
     @FXML
     private TextField txtSearch;
+    @FXML
+    private TextField txtGenre;
+    @FXML
+    private TextField txtQuantity;
+    @FXML
+    private TextField txtSold;
+
     private final BookDAO bookDAO;
 
     public MainController() {
@@ -68,6 +85,9 @@ public class MainController {
                 new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getYearPublished()).asObject());
         colPrice.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+        colGenre.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getGenre()));
+        colQuantity.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getQuantity()).asObject());
+        colSold.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getSold()).asObject());
 
         tableBooks.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
@@ -77,11 +97,24 @@ public class MainController {
                 txtAuthor.setText(newSel.getAuthor());
                 spYear.getValueFactory().setValue(newSel.getYearPublished());
                 txtPrice.setText(String.valueOf(newSel.getPrice()));
+                txtGenre.setText(newSel.getGenre());
+                txtQuantity.setText(String.valueOf(newSel.getQuantity()));
+                txtSold.setText(String.valueOf(newSel.getSold()));
             }
         });
         tableBooks.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE) {
-                handleDeleteBook();
+                Book selectedBook = tableBooks.getSelectionModel().getSelectedItem();
+                if (selectedBook != null) {
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler eliminare questo libro?", ButtonType.YES, ButtonType.NO);
+                    confirmation.setTitle("Conferma eliminazione");
+                    confirmation.setHeaderText("Eliminazione libro");
+                    if (confirmation.showAndWait().orElse(ButtonType.NO) == ButtonType.YES) {
+                        bookDAO.deleteBook(selectedBook.getIsbn());
+                        loadBooks();
+                        clearFields();
+                    }
+                }
             }
         });
         loadBooks();
@@ -107,7 +140,15 @@ public class MainController {
         String author = txtAuthor.getText().trim();
         int year = spYear.getValue();
         String priceStr = txtPrice.getText().trim();
-
+        String genre = txtGenre.getText().trim();
+        int quantity, sold;
+        try {
+            quantity = Integer.parseInt(txtQuantity.getText().trim());
+            sold = Integer.parseInt(txtSold.getText().trim());
+        } catch (NumberFormatException e) {
+            showAlert("Errore", "Quantità e venduti devono essere numeri interi!");
+            return;
+        }
         if (isbn.isEmpty() || title.isEmpty() || publisher.isEmpty() ||
                 author.isEmpty() || priceStr.isEmpty()) {
             showAlert("Campi Vuoti", "Compila tutti i campi!");
@@ -115,6 +156,10 @@ public class MainController {
         }
         if (isbn.length() != 13) {
             showAlert("Errore ISBN", "L'ISBN deve contenere esattamente 13 cifre!");
+            return;
+        }
+        if (!bookDAO.isIsbnUnico(isbn)) {
+            showAlert("Errore ISBN", "L'ISBN esiste già!");
             return;
         }
         double price;
@@ -143,6 +188,15 @@ public class MainController {
         String author = txtAuthor.getText().trim();
         int year = spYear.getValue();
         String priceStr = txtPrice.getText().trim();
+        String genre = txtGenre.getText().trim();
+        int quantity, sold;
+        try {
+            quantity = Integer.parseInt(txtQuantity.getText().trim());
+            sold = Integer.parseInt(txtSold.getText().trim());
+        } catch (NumberFormatException e) {
+            showAlert("Errore", "Quantità e venduti devono essere numeri interi!");
+            return;
+        }
 
         if (isbn.isEmpty() || title.isEmpty() || publisher.isEmpty() ||
                 author.isEmpty() || priceStr.isEmpty()) {
@@ -169,6 +223,9 @@ public class MainController {
         selectedBook.setAuthor(author);
         selectedBook.setYearPublished(year);
         selectedBook.setPrice(price);
+        selectedBook.setGenre(genre);
+        selectedBook.setQuantity(quantity);
+        selectedBook.setSold(sold);
         bookDAO.updateBook(selectedBook);
         loadBooks();
         clearFields();
@@ -178,6 +235,10 @@ public class MainController {
     private void handleDeleteBook() {
         Book selectedBook = tableBooks.getSelectionModel().getSelectedItem();
         if (selectedBook == null) {return;}
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler eliminare il libro?", ButtonType.YES, ButtonType.NO);
+        if (confirmation.showAndWait().orElse(ButtonType.NO) != ButtonType.YES) {
+            return;
+        }
         bookDAO.deleteBook(selectedBook.getIsbn());
         loadBooks();
         clearFields();
@@ -188,6 +249,32 @@ public class MainController {
     @FXML
     private void handleLogout() {LibraryApp.switchToLoginView();}
 
+
+    @FXML
+    private void handleShowStatistics() {
+        try {
+            FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource("/devatron/company/libraryapp/stats-view.fxml"));
+            Scene scene = new Scene(loader.load());
+            LibraryApp.getPrimaryStage().setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleShowLoans() {
+        try {
+            FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource("/devatron/company/libraryapp/loan-view.fxml"));
+            Scene scene = new Scene(loader.load());
+            LibraryApp.getPrimaryStage().setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+
+
     private void clearFields() {
         txtIsbn.clear();
         txtTitle.clear();
@@ -196,6 +283,9 @@ public class MainController {
         spYear.getValueFactory().setValue(2025);
         txtPrice.clear();
         txtSearch.clear();
+        txtGenre.clear();
+        txtQuantity.clear();
+        txtSold.clear();
     }
     private void showAlert(String title, String msg) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
