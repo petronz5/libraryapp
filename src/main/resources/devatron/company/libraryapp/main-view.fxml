@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="devatron.company.libraryapp.MainController"
+            prefHeight="600.0"
+            prefWidth="900.0"
+            stylesheets="@styles.css">
+    <top>
+        <HBox spacing="10" styleClass="top-bar">
+            <Label text="Search:" styleClass="search-label"/>
+            <TextField fx:id="txtSearch" promptText="Cerca (ISBN/Titolo/Editore/Autore)" styleClass="search-field"/>
+            <Button text="Cerca" onAction="#handleSearch" styleClass="search-button"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="logout-button"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tableBooks">
+            <columns>
+                <TableColumn fx:id="colIsbn" text="ISBN" prefWidth="120"/>
+                <TableColumn fx:id="colTitle" text="Titolo" prefWidth="200"/>
+                <TableColumn fx:id="colPublisher" text="Editore" prefWidth="150"/>
+                <TableColumn fx:id="colAuthor" text="Autore" prefWidth="150"/>
+                <TableColumn fx:id="colYear" text="Anno" prefWidth="70"/>
+                <TableColumn fx:id="colPrice" text="Prezzo" prefWidth="70"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <VBox spacing="10" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="10" bottom="10" left="10" right="10"/>
+            </padding>
+            <HBox spacing="10">
+                <Label text="ISBN (13 cifre):"/>
+                <TextField fx:id="txtIsbn" promptText="Inserisci ISBN"/>
+                <Label text="Titolo:"/>
+                <TextField fx:id="txtTitle" promptText="Inserisci titolo"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Editore:"/>
+                <TextField fx:id="txtPublisher" promptText="Inserisci editore"/>
+                <Label text="Autore:"/>
+                <TextField fx:id="txtAuthor" promptText="Inserisci autore"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <Label text="Anno:"/>
+                <Spinner fx:id="spYear" editable="true"/>
+                <Label text="Prezzo:"/>
+                <TextField fx:id="txtPrice" promptText="Es. 9.99"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="Aggiungi" onAction="#handleAddBook"/>
+                <Button text="Aggiorna" onAction="#handleUpdateBook"/>
+                <Button text="Elimina" onAction="#handleDeleteBook"/>
+                <Button text="Pulisci Campi" onAction="#handleClearFields"/>
+                <Button text="Ricarica" onAction="#loadBooks"/>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>
