@@ -4,19 +4,29 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+
 
 public class LibraryApp extends Application {
     private static Stage primaryStage;
     @Override
     public void start(Stage stage) throws IOException {
+        String saved = SettingsManager.loadLang();
+        Lang.load(saved);                
         primaryStage = stage;
-        switchToLoginView();
-        primaryStage.setTitle("Library App - Login");
-        primaryStage.centerOnScreen();
+
+        String sessionEmail = SessionManager.getValidSessionEmail();
+
+        if (sessionEmail != null) {
+            switchToMainView();         
+        } else {
+            switchToLoginView();        
+        }
+
+        primaryStage.centerOnScreen();   // posizione finestra al centro
         primaryStage.show();
     }
+
     public static void switchToLoginView() {
         try {
             FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource("/devatron/company/libraryapp/login-view.fxml"));

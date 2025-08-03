@@ -12,27 +12,49 @@
       prefWidth="420.0"
       styleClass="login-container">
 
-    <Label text="Accesso alla Libreria" styleClass="login-title"/>
+    <!-- Questo era: <Label text="Accesso alla Libreria" …/> -->
+    <Label fx:id="lblTitle"
+           text="Accesso alla Libreria"
+           styleClass="login-title"/>
 
     <HBox spacing="10" alignment="CENTER">
-        <Label text="Email:" styleClass="login-label"/>
-        <TextField fx:id="txtEmail" promptText="email@devabook.com" styleClass="login-field"/>
+        <!-- Aggiunto fx:id -->
+        <Label fx:id="lblEmail"
+               text="Email:"
+               styleClass="login-label"/>
+        <TextField fx:id="txtEmail"
+                   promptText="email@devabook.com"
+                   styleClass="login-field"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER">
-        <Label text="Password:" styleClass="login-label"/>
+        <Label fx:id="lblPassword"
+               text="Password:"
+               styleClass="login-label"/>
         <StackPane>
-            <!-- Il campo nascosto -->
-            <PasswordField fx:id="txtPassword" promptText="Password" styleClass="login-field"/>
-            <!-- Il campo visibile, inizialmente invisibile -->
-            <TextField fx:id="txtPasswordVisible" promptText="Password" styleClass="login-field" visible="false" managed="false"/>
+            <PasswordField fx:id="txtPassword"
+                           promptText="Password"
+                           styleClass="login-field"/>
+            <TextField fx:id="txtPasswordVisible"
+                       promptText="Password"
+                       styleClass="login-field"
+                       visible="false"
+                       managed="false"/>
         </StackPane>
-        <!-- Pulsante per togglare la visibilità -->
-        <Button fx:id="btnTogglePassword" text="👁" onAction="#togglePasswordVisibility" styleClass="toggle-button"/>
+        <Button fx:id="btnTogglePassword"
+                text="👁"
+                onAction="#togglePasswordVisibility"
+                styleClass="toggle-button"/>
     </HBox>
 
     <HBox spacing="20" alignment="CENTER">
-        <Button fx:id="btnLogin" text="Login" onAction="#handleLogin"/>
-        <Button text="Esci" onAction="#handleExit"/>
+        <Button fx:id="btnLogin"
+                text="Login"
+                onAction="#handleLogin"/>
+        <!-- Qui aggiungi fx:id in modo che btnExit venga iniettato -->
+        <Button fx:id="btnExit"
+                text="Esci"
+                onAction="#handleExit"/>
     </HBox>
+
 </VBox>

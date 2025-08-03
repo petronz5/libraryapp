@@ -25,11 +25,15 @@ public class StatisticsController {
     private TableColumn<Book, Integer> colSold;
     @FXML
     private TextField txtSearchBook;
+    @FXML private Label lblStatsTitle;
+    @FXML private Button btnBack;
+
 
     private final BookDAO bookDAO = new BookDAO();
 
     @FXML
     public void initialize() {
+        applyTranslations();
         List<Book> allBooks = bookDAO.getAllBooks();
 
         // PieChart per generi
@@ -69,6 +73,16 @@ public class StatisticsController {
                 tableSoldBooks.setItems(FXCollections.observableArrayList(filtered));
             }
         });
+    }
+
+
+    private void applyTranslations() {
+        lblStatsTitle .setText(Lang.get("stats.title"));
+        txtSearchBook .setPromptText(Lang.get("stats.search.prompt"));
+        btnBack       .setText(Lang.get("stats.button.back"));
+        colIsbn       .setText(Lang.get("stats.col.isbn"));
+        colTitle      .setText(Lang.get("stats.col.title"));
+        colSold       .setText(Lang.get("stats.col.sold"));
     }
 
     @FXML

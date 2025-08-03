@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="devatron.company.libraryapp.LoanController"
-      spacing="15" alignment="CENTER">
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-    
-    <Label text="Gestione Prestiti" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-    
-    <HBox spacing="10" alignment="CENTER">
-        <Label text="Utente:"/>
-        <TextField fx:id="txtUserEmail" promptText="Email utente"/>
-    </HBox>
-    
-    <HBox spacing="10" alignment="CENTER">
-        <Label text="ISBN Libro:"/>
-        <TextField fx:id="txtBookIsbn" promptText="ISBN del libro"/>
-    </HBox>
-    
-    <HBox spacing="10" alignment="CENTER">
-        <Label text="Data inizio:"/>
-        <DatePicker fx:id="dpLoanStart"/>
-    </HBox>
-    
-    <HBox spacing="10" alignment="CENTER">
-        <Label text="Data scadenza:"/>
-        <DatePicker fx:id="dpLoanDue"/>
-    </HBox>
-    
-    <HBox spacing="10">
-        <Button text="Registra Prestito" onAction="#handleRegisterLoan"/>
-        <Button text="Annulla" onAction="#handleCancel"/>
-    </HBox>
-</VBox>
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="devatron.company.libraryapp.LoanController"
+      spacing="20"
+      alignment="CENTER"
+      stylesheets="@styles.css"
+      styleClass="loan-container">
+
+    <TableView fx:id="tableLoans"
+               prefWidth="700"
+               styleClass="loan-table">
+        <columns>
+            <TableColumn fx:id="colUser"    prefWidth="120"/>
+            <TableColumn fx:id="colBook"    prefWidth="200"/>
+            <TableColumn fx:id="colPhone"   prefWidth="100"/>
+            <TableColumn fx:id="colStart"   prefWidth="90"/>
+            <TableColumn fx:id="colDue"     prefWidth="90"/>
+            <TableColumn fx:id="colExpired" prefWidth="80"/>  <!-- Scaduto -->
+        </columns>
+    </TableView>
+
+    <VBox spacing="10"
+          alignment="TOP_CENTER"
+          styleClass="loan-form">
+        <Label fx:id="lblNewLoan"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+        <TextField   fx:id="txtUserName"/>
+        <TextField   fx:id="txtUserSurname"/>
+        <TextField   fx:id="txtUserPhone"/>
+
+        <ComboBox    fx:id="comboBook"/>
+        <DatePicker  fx:id="dpLoanStart"/>
+        <DatePicker  fx:id="dpLoanDue"/>
+
+        <Button      fx:id="btnRegister" onAction="#handleRegisterLoan"/>
+        <Button      fx:id="btnReturn"   onAction="#handleReturn"/>
+        <Button      fx:id="btnCancel"   onAction="#handleCancel"/>
+    </VBox>
+</HBox>

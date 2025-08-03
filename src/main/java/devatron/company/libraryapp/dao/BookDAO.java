@@ -60,7 +60,7 @@ public class BookDAO {
     // SEARCH
     public List<Book> searchBooks(String keyword) {
         List<Book> books = new ArrayList<>();
-        String sql = "SELECT isbn, title, publisher, author, year_published, price " +
+        String sql = "SELECT isbn, title, publisher, author, year_published, price, genre, quantity, sold " +
                 "FROM books " +
                 "WHERE isbn ILIKE ? OR title ILIKE ? OR publisher ILIKE ? OR author ILIKE ? " +
                 "ORDER BY title ASC";

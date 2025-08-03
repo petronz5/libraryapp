@@ -4,6 +4,7 @@ import devatron.company.libraryapp.dao.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -19,6 +20,11 @@ public class LoginController {
     private Button btnTogglePassword;
     @FXML
     private Button btnLogin;
+    
+    @FXML private Label lblTitle;
+    @FXML private Label lblEmail;
+    @FXML private Label lblPassword;
+    @FXML private Button btnExit;
 
     private final UserDAO userDAO;
 
@@ -27,6 +33,7 @@ public class LoginController {
     }
     @FXML
     private void initialize() {
+        applyTranslations();
         txtPassword.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!txtPasswordVisible.isVisible()) {
                 txtPasswordVisible.setText(newVal);
@@ -68,11 +75,24 @@ public class LoginController {
         }
         boolean valid = userDAO.validateUser(email, password);
         if (valid) {
+            SessionManager.saveSession(email);
             LibraryApp.switchToMainView();
         } else {
             showAlert("Login Fallito", "Email o password errati, oppure dominio non valido.");
         }
     }
+
+    private void applyTranslations() {
+        lblTitle   .setText(Lang.get("login.title"));
+        lblEmail   .setText(Lang.get("login.email"));
+        lblPassword.setText(Lang.get("login.password"));
+        btnLogin   .setText(Lang.get("login.button"));
+        btnExit    .setText(Lang.get("login.exit"));
+        txtEmail          .setPromptText(Lang.get("login.email.prompt"));
+        txtPassword       .setPromptText(Lang.get("login.password.prompt"));
+        txtPasswordVisible.setPromptText(Lang.get("login.password.prompt"));
+    }
+
     @FXML
     private void handleExit() {
         Stage stage = (Stage) txtEmail.getScene().getWindow();

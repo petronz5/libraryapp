@@ -52,4 +52,8 @@ public class Book {
     
     public int getSold() { return sold; }
     public void setSold(int sold) { this.sold = sold; }
+
+    public String toString() {
+        return title;
+    }
 }
