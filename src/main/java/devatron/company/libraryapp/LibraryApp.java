@@ -23,7 +23,7 @@ public class LibraryApp extends Application {
             switchToLoginView();        
         }
 
-        primaryStage.centerOnScreen();   // posizione finestra al centro
+        primaryStage.centerOnScreen();      
         primaryStage.show();
     }
 

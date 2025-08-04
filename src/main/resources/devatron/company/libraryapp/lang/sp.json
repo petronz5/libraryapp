@@ -64,6 +64,14 @@
   "stats.col.isbn": "ISBN",
   "stats.col.title": "Título",
   "stats.col.sold": "Vendidos",
+  "stats.tab.genre":     "Por género",
+  "stats.tab.monthly":   "Ventas mensuales",
+  "stats.monthly.title": "Ventas por mes",
+  "stats.monthly.qtyTitle": "Copias vendidas",
+  "stats.monthly.revTitle": "Ingresos (€)",
+  "stats.monthly.col.month": "Mes",
+  "stats.monthly.col.qty":   "Cantidad",
+  "stats.monthly.col.rev":   "Ingresos",
 
   "lang.it": "Italiano",
   "lang.en": "Inglés",
@@ -76,5 +84,11 @@
   
   "loan.notify.title":        "Préstamos vencidos",
   "loan.notify.header":       "¡Advertencia!",
-  "loan.notify.content":      "Tienes %d préstamos vencidos hoy."
+  "loan.notify.content":      "Tienes %d préstamos vencidos hoy.",
+
+  "sale.dialog.title": "Venta",
+  "sale.dialog.header": "Venta: %s",
+  "sale.dialog.prompt": "¿Cuántas copias quieres vender?",
+  "sale.error.invalidNumber": "Por favor, introduce un número entero válido.",
+  "sale.error.notEnoughCopies": "No hay suficientes copias disponibles para realizar esta venta."
 }

@@ -36,24 +36,36 @@ public class LoanDAO {
         return loans;
     }
 
+    
     public List<Loan> getLoansDueOn(LocalDate date) {
         List<Loan> list = new ArrayList<>();
         String sql = """
-            SELECT id, isbn, title, user_name, user_surname, user_phone,
-                start_date, due_date, returned
-            FROM loans
-            WHERE due_date = ? AND returned = false
-        ORDER BY due_date
+            SELECT l.id,
+                l.book_isbn,
+                b.title AS book_title,
+                l.user_name,
+                l.user_surname,
+                l.user_phone,
+                l.start_date,
+                l.due_date,
+                l.returned
+            FROM loans l
+            JOIN books b ON l.book_isbn = b.isbn
+            WHERE l.due_date = ?
+            AND l.returned = FALSE
+            ORDER BY l.due_date
         """;
+
         try (Connection c = DBUtil.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)) {
+
             ps.setDate(1, Date.valueOf(date));
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Loan(
                         rs.getInt("id"),
-                        rs.getString("isbn"),
-                        rs.getString("title"),
+                        rs.getString("book_isbn"),           // prende il campo corretto
+                        rs.getString("book_title"),          // titolo dal join
                         rs.getString("user_name"),
                         rs.getString("user_surname"),
                         rs.getString("user_phone"),

@@ -1,17 +1,25 @@
 package devatron.company.libraryapp;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
+
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import devatron.company.libraryapp.dao.BookDAO;
+import devatron.company.libraryapp.dao.SaleDAO;
 import devatron.company.libraryapp.model.Book;
+import devatron.company.libraryapp.model.Sale;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 
 public class MainController {
 
@@ -65,6 +73,7 @@ public class MainController {
     @FXML private Button btnLogout;
 
     private final BookDAO bookDAO;
+    private final SaleDAO saleDAO = new SaleDAO();
 
     @FXML private Label lblIsbn;
     @FXML private Label lblTitle;
@@ -146,6 +155,15 @@ public class MainController {
         });
         
         tableBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableBooks.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                Book selected = tableBooks.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    showSaleDialog(selected);
+                    event.consume();   // preveniamo ulteriori gestioni di ENTER
+                }
+            }
+        });
 
         applyTranslations();
 
@@ -366,18 +384,90 @@ public class MainController {
         }
     }
 
+
+    private void showSaleDialog(Book book) {
+        Dialog<Pair<Integer,LocalDate>> dlg = new Dialog<>();
+        dlg.setTitle(Lang.get("sale.dialog.title"));
+        dlg.setHeaderText(String.format(Lang.get("sale.dialog.header"), book.getTitle()));
+
+        // bottoni
+        dlg.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // form
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        TextField qtyField = new TextField("1");
+        qtyField.setPromptText(Lang.get("sale.dialog.prompt"));
+        DatePicker dpSale   = new DatePicker(LocalDate.now());
+
+        grid.add(new Label(Lang.get("sale.dialog.qty")),  0, 0);
+        grid.add(qtyField,                                 1, 0);
+        grid.add(new Label(Lang.get("sale.dialog.date")), 1, 1);
+        grid.add(dpSale,                                  2, 1);
+
+        dlg.getDialogPane().setContent(grid);
+
+        // risultato
+        dlg.setResultConverter(btn -> {
+            if (btn == ButtonType.OK) {
+                try {
+                    int q = Integer.parseInt(qtyField.getText().trim());
+                    return new Pair<>(q, dpSale.getValue());
+                } catch (NumberFormatException e) { /* ignore */ }
+            }
+            return null;
+        });
+
+        dlg.showAndWait().ifPresent(pair -> {
+            int soldQty    = pair.getKey();
+            LocalDate date = pair.getValue();
+            if (soldQty<=0 || soldQty>book.getQuantity()) {
+                showWarning( soldQty<=0
+                    ? Lang.get("sale.error.invalidNumber")
+                    : Lang.get("sale.error.exceeds"));
+            } else {
+                processSale(book, soldQty, date);
+            }
+        });
+    }
+
+    private void processSale(Book book, int qtySold, LocalDate saleDate) {
+        saleDAO.addSale(new Sale(0, book.getIsbn(), qtySold, book.getPrice(), saleDate));
+        book.setQuantity(book.getQuantity() - qtySold);
+        book.setSold(book.getSold() + qtySold);
+        bookDAO.updateBook(book);
+        loadBooks();
+    }
+
+    /** Mostra un warning semplice */
+    private void showWarning(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, message, ButtonType.OK);
+        alert.setHeaderText(null);
+        alert.showAndWait();
+    }
+
     @FXML
     private void handleShowLoans() {
         try {
-            FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource("/devatron/company/libraryapp/loan-view.fxml"));
-            Scene scene = new Scene(loader.load());
+            FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource(
+                "/devatron/company/libraryapp/loan-view.fxml"));
+            Parent root = loader.load();
+            // imposta scena
+            Scene scene = new Scene(root);
             LibraryApp.getPrimaryStage().setScene(scene);
-            LibraryApp.getPrimaryStage().setTitle("Prestiti");
+            LibraryApp.getPrimaryStage().setTitle(Lang.get("main.button.loans"));
             LibraryApp.getPrimaryStage().centerOnScreen();
+            // **ATTENZIONE**: qui mostriamo la view, poi…
+            // …prendiamo il controller e invochiamo la notifica
+            LoanController loanCtrl = loader.getController();
+            loanCtrl.showDueNotification();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void clearFields() {
         txtIsbn.clear();

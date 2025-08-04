@@ -123,6 +123,7 @@ public class BookDAO {
         }
     }
 
+    // UTILITY
     public boolean isIsbnUnico(String isbn) {
         String query = "SELECT COUNT(*) FROM books WHERE isbn = ?";
         try (Connection conn = DBUtil.getConnection();
@@ -138,5 +139,31 @@ public class BookDAO {
         return false;
     }
 
+    public Book getByIsbn(String isbn) {
+        String sql = "SELECT isbn, title, publisher, author, year_published, price, genre, quantity, sold "
+                + "FROM books WHERE isbn = ?";
+        try (Connection conn = DBUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Book(
+                        rs.getString("isbn"),
+                        rs.getString("title"),
+                        rs.getString("publisher"),
+                        rs.getString("author"),
+                        rs.getInt("year_published"),
+                        rs.getDouble("price"),
+                        rs.getString("genre"),
+                        rs.getInt("quantity"),
+                        rs.getInt("sold")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

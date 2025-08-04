@@ -64,7 +64,16 @@
   "stats.col.isbn": "ISBN",
   "stats.col.title": "Titre",
   "stats.col.sold": "Vendus",
-
+  "stats.col.quantity": "Quantité",
+  "stats.tab.genre":     "Par genre",
+  "stats.tab.monthly":   "Ventes mensuelles",
+  "stats.monthly.title": "Ventes par mois",
+  "stats.monthly.qtyTitle": "Copies vendues",
+  "stats.monthly.revTitle": "Revenus (€)",
+  "stats.monthly.col.month": "Mois",
+  "stats.monthly.col.qty":   "Quantité",
+  "stats.monthly.col.rev":   "Revenus",
+  
   "lang.it": "Italien",
   "lang.en": "Anglais",
   "lang.fr": "Français",
@@ -76,5 +85,11 @@
 
   "loan.notify.title":        "Prêts à venir",
   "loan.notify.header":       "Attention!",
-  "loan.notify.content":      "Vous avez %d prêts à venir aujourd'hui."
+  "loan.notify.content":      "Vous avez %d prêts à venir aujourd'hui.",
+
+  "sale.dialog.title": "Vente",
+  "sale.dialog.header": "Vente: %s",
+  "sale.dialog.prompt": "Combien de copies voulez-vous vendre?",
+  "sale.error.invalidNumber": "Veuillez entrer un entier valide.",
+  "sale.error.exceeds": "La quantité vendue dépasse les copies disponibles."
 }

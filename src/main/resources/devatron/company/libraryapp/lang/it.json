@@ -64,6 +64,15 @@
   "stats.col.isbn": "ISBN",
   "stats.col.title": "Titolo",
   "stats.col.sold": "Venduti",
+  "stats.tab.genre":     "Per genere",
+  "stats.tab.monthly":   "Vendite mensili",
+  "stats.monthly.title": "Vendite per mese",
+  "stats.monthly.qtyTitle": "Copie vendute",
+  "stats.monthly.revTitle": "Ricavi (€)",
+
+  "stats.monthly.col.month": "Mese",
+  "stats.monthly.col.qty":   "Quantità",
+  "stats.monthly.col.rev":   "Ricavi",
   
   "lang.it": "Italiano",
   "lang.en": "Inglese",
@@ -76,6 +85,12 @@
 
   "loan.notify.title":        "Prestiti in scadenza",
   "loan.notify.header":       "Attenzione!",
-  "loan.notify.content":      "Hai %d prestiti che scadono oggi."
+  "loan.notify.content":      "Hai %d prestiti che scadono oggi.",
+
+  "sale.dialog.title": "Registra Vendita",
+  "sale.dialog.header": "Vendita: %s",
+  "sale.dialog.prompt": "Quante copie vuoi vendere?",
+  "sale.error.invalidNumber": "Inserisci un numero intero valido.",
+  "sale.error.exceeds": "La quantità venduta supera le copie disponibili."
 
 }
