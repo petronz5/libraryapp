@@ -123,6 +123,39 @@ public class MainController {
         comboGenre.setItems(FXCollections.observableArrayList(
             "Giallo", "Romanzo", "Horror", "Thriller", "Romanzo storico", "Saggio", "Biografia", "Autobiografia", "Manuale"
         ));
+        comboGenre.setEditable(true);
+        Tooltip genreTooltip = new Tooltip(Lang.get("tooltip.genre.edit"));
+        comboGenre.setTooltip(genreTooltip);
+        comboGenre.setVisibleRowCount(10);
+
+        comboGenre.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == null || newVal.isEmpty()) {
+                comboGenre.hide();
+                return;
+            }
+
+            String text = newVal.toLowerCase();
+
+            // Filtra i generi che contengono il testo inserito
+            ObservableList<String> filteredItems = FXCollections.observableArrayList();
+            for (String genre : comboGenre.getItems()) {
+                if (genre.toLowerCase().contains(text)) {
+                    filteredItems.add(genre);
+                }
+            }
+
+            // Aggiorna il menu dropdown con i risultati filtrati
+            if (!filteredItems.isEmpty()) {
+                comboGenre.setItems(filteredItems);
+                if (!comboGenre.isShowing()) {
+                    comboGenre.show();
+                }
+            } else {
+                comboGenre.hide();
+            }
+        });
+
+
         colQuantity.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getQuantity()).asObject());
         colSold.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getSold()).asObject());
         localeCombo.setItems(FXCollections.observableArrayList("IT", "EN", "FR", "SP"));

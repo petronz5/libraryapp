@@ -22,6 +22,18 @@
   "main.button.logout": "Logout",
   "main.combo.locale.prompt": "Lingua",
 
+  "genre.mystery": "Giallo",
+  "genre.novel": "Romanzo",
+  "genre.horror": "Horror",
+  "genre.thriller": "Thriller",
+  "genre.historical": "Romanzo storico",
+  "genre.essay": "Saggio",
+  "genre.biography": "Biografia",
+  "genre.autobiography": "Autobiografia",
+  "genre.manual": "Manuale",
+
+  "tooltip.genre.edit": "Puoi scrivere per filtrare i generi o aggiungere un nuovo genere",
+
   "main.delete.title": "Conferma eliminazione",
   "main.delete.confirm": "Sei sicuro di voler eliminare questo libro?",
 

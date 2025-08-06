@@ -22,6 +22,18 @@
   "main.button.logout": "Déconnexion",
   "main.combo.locale.prompt": "Langue",
 
+  "genre.mystery": "Mystère",
+  "genre.novel": "Roman",
+  "genre.horror": "Horreur",
+  "genre.thriller": "Thriller",
+  "genre.historical": "Historique",
+  "genre.essay": "Essai",
+  "genre.biography": "Biographie",
+  "genre.autobiography": "Autobiographie",
+  "genre.manual": "Manuel",
+
+  "tooltip.genre.edit": "Vous pouvez écrire pour filtrer les genres ou ajouter un nouveau genre",
+
   "main.delete.title": "Confirmation de suppression",
   "main.delete.confirm": "Êtes-vous sûr de vouloir supprimer ce livre ?",
 

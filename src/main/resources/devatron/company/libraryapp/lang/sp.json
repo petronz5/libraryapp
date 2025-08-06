@@ -22,6 +22,19 @@
   "main.button.logout": "Cerrar sesión",
   "main.combo.locale.prompt": "Idioma",
 
+  "genre.mystery": "Misterio",
+  "genre.novel": "Novela",
+  "genre.horror": "Horror",
+  "genre.thriller": "Thriller",
+  "genre.historical": "Historical",
+  "genre.essay": "Essay",
+  "genre.biography": "Biography",
+  "genre.science": "Ciencia",
+  "genre.autobiography": "Autobiografía",
+  "genre.manual": "Manual",
+
+  "tooltip.genre.edit": "Puedes escribir para filtrar los géneros o agregar un nuevo género",
+
   "main.delete.title": "Confirmación de eliminación",
   "main.delete.confirm": "¿Estás seguro de que deseas eliminar este libro?",
 
