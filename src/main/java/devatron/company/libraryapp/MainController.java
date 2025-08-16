@@ -411,7 +411,7 @@ public class MainController {
             Scene scene = new Scene(loader.load());
             LibraryApp.getPrimaryStage().setScene(scene);
             LibraryApp.getPrimaryStage().setTitle("Statistiche");
-            LibraryApp.getPrimaryStage().centerOnScreen();
+            LibraryApp.getPrimaryStage().setFullScreen(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -491,7 +491,7 @@ public class MainController {
             Scene scene = new Scene(root);
             LibraryApp.getPrimaryStage().setScene(scene);
             LibraryApp.getPrimaryStage().setTitle(Lang.get("main.button.loans"));
-            LibraryApp.getPrimaryStage().centerOnScreen();
+            LibraryApp.getPrimaryStage().setFullScreen(true);
             // **ATTENZIONE**: qui mostriamo la view, poi…
             // …prendiamo il controller e invochiamo la notifica
             LoanController loanCtrl = loader.getController();

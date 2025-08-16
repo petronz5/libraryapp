@@ -4,50 +4,61 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyCombination; // <--- aggiunta
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import java.io.IOException;
-
 
 public class LibraryApp extends Application {
     private static Stage primaryStage;
     @Override
     public void start(Stage stage) throws IOException {
         String saved = SettingsManager.loadLang();
-        Lang.load(saved);                
+        Lang.load(saved);
         primaryStage = stage;
+
+        // Creiamo UNA sola Scene vuota e la impostiamo subito: poi cambieremo solo il root
+        Scene scene = new Scene(new Pane(), 800, 600);
+        primaryStage.setScene(scene);
+
+        // Impedisci uscita accidentale dal fullscreen
+        primaryStage.setFullScreenExitHint("");
+        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+
+        // Metti fullscreen UNA SOLA VOLTA (all'avvio)
+        primaryStage.setFullScreen(true);
 
         String sessionEmail = SessionManager.getValidSessionEmail();
 
         if (sessionEmail != null) {
-            switchToMainView();         
+            setRootFromFXML("/devatron/company/libraryapp/main-view.fxml");
         } else {
-            switchToLoginView();        
+            setRootFromFXML("/devatron/company/libraryapp/login-view.fxml");
         }
 
-        primaryStage.centerOnScreen();      
         primaryStage.show();
     }
 
-    public static void switchToLoginView() {
+    // Helper che sostituisce solo il root della Scene (evita di cambiare la Scene stessa)
+    private static void setRootFromFXML(String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource("/devatron/company/libraryapp/login-view.fxml"));
-            Scene scene = new Scene(loader.load());
-            primaryStage.setTitle("Library App - Login");
-            primaryStage.setScene(scene);
-            primaryStage.centerOnScreen();
+            Parent root = FXMLLoader.load(LibraryApp.class.getResource(fxmlPath));
+            primaryStage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void switchToLoginView() {
+        // non usare setScene, usa il helper
+        setRootFromFXML("/devatron/company/libraryapp/login-view.fxml");
+        primaryStage.setTitle("Library App - Login");
+    }
+
     public static void switchToMainView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(LibraryApp.class.getResource("/devatron/company/libraryapp/main-view.fxml"));
-            Scene scene = new Scene(loader.load());
-            primaryStage.setTitle("Library Manager");
-            primaryStage.setScene(scene);
-            primaryStage.centerOnScreen();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // non usare setScene, usa il helper
+        setRootFromFXML("/devatron/company/libraryapp/main-view.fxml");
+        primaryStage.setTitle("Library Manager");
     }
 
     public static Stage getPrimaryStage() {
